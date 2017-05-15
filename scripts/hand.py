@@ -3,21 +3,7 @@
  
 import rospy
 from std_msgs.msg import Float64
-import sys
-import enum
-import re
-import struct
-import sys
-import threading
-import time
-import math
-import serial
-from serial.tools.list_ports import comports
-from common import *
-from geometry_msgs.msg import Quaternion, Vector3
-from sensor_msgs.msg import Imu
-from std_msgs.msg import String, UInt8, Header, MultiArrayLayout, MultiArrayDimension, Float64MultiArray
-from myo2dynamixel.msg import MyoArm, EmgArray
+from myo2dynamixel.msg import EmgArray
 
 pub = rospy.Publisher("/tilt_controller/command", Float64)
 
