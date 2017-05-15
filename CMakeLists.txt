@@ -48,8 +48,13 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+<<<<<<< HEAD
    EmgArray.msg
    MyoArm.msg
+=======
+   MyoArm.msg
+   EmgArray.msg
+>>>>>>> 11b7f13f892fefe99850f12ba97b28b05a6eb4a6
  )
 
 ## Generate services in the 'srv' folder
@@ -67,10 +72,17 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
+<<<<<<< HEAD
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
 )
+=======
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+ )
+>>>>>>> 11b7f13f892fefe99850f12ba97b28b05a6eb4a6
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##

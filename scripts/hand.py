@@ -13,7 +13,7 @@ import time
 import math
 import serial
 from serial.tools.list_ports import comports
-#from common import *
+from common import *
 from geometry_msgs.msg import Quaternion, Vector3
 from sensor_msgs.msg import Imu
 from std_msgs.msg import String, UInt8, Header, MultiArrayLayout, MultiArrayDimension, Float64MultiArray
