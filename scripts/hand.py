@@ -3,8 +3,6 @@
  
 import rospy
 from std_msgs.msg import Float64
-#from leap_motion.msg import leap
-#from leap_motion.msg import leapros
 import sys
 import enum
 import re
@@ -19,23 +17,24 @@ from serial.tools.list_ports import comports
 from geometry_msgs.msg import Quaternion, Vector3
 from sensor_msgs.msg import Imu
 from std_msgs.msg import String, UInt8, Header, MultiArrayLayout, MultiArrayDimension, Float64MultiArray
-from ros_myo.msg import MyoArm, EmgArray
+from myo2dynamixel.msg import MyoArm, EmgArray
 
 pub = rospy.Publisher("/tilt_controller/command", Float64)
 
-def send_command():
+def send_command(mode):
     rospy.init_node("myo_to_dynamixel")
-#    rospy.Subscriber("/myo_emg", EmgArray, callback ,queue_size=10)    
-#    rospy.Subscriber("/myo_emg", EmgArray, call)
-    rospy.Subscriber("/myo_emg", EmgArray, catcher, queue_size=10)#要調整
+    if mode == 1:
+       global f
+       f = open("/home/roboworks/catkin_ws/src/myo2dynamixel/scripts/train.txt","w")
+       rospy.Subscriber("/myo_emg", EmgArray, call, queue_size=1)
+    else:
+       rospy.Subscriber("/myo_emg", EmgArray, catcher, queue_size=1)#要調整
     rospy.spin()
 
 def call(data):
-    print data.data[0]
-
-def callback(data):	
-    hnum = (data.data[0]/50)
-    pub.publish(hnum)
+    global f
+    f.write(str(data.data)+"\n")
+    print data.data
 
 def catcher(data):
     if data.data[0]>=200:
@@ -46,4 +45,6 @@ def catcher(data):
        pub.publish(0.9)#開くときの数値を入れて
 
 if __name__ == '__main__':
-   send_command()
+   send_command(1) #mode 1:学習データ作るモード 2:制御モード
+   global f
+   f.close()
