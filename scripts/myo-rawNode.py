@@ -16,7 +16,7 @@ import rospy
 from std_msgs.msg import String, UInt8, Header, MultiArrayLayout, MultiArrayDimension, Float64MultiArray
 from geometry_msgs.msg import Quaternion, Vector3
 from sensor_msgs.msg import Imu
-from ros_myo.msg import MyoArm, EmgArray
+from myo2dynamixel.msg import MyoArm, EmgArray
 
 def multichr(ords):
     if sys.version_info[0] >= 3:
