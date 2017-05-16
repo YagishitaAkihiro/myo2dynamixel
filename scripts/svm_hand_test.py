@@ -4,30 +4,38 @@ from sklearn.svm import LinearSVC
 import numpy as np
 import rospy
 from myo2dynamixel.msg import EmgArray
+from std_msgs.msg import Float64
 
 class SVM_HC():
       def __init__(self):
           rospy.init_node("svm_hc")
+
           # 学習データ
-          data_training_tmp = np.loadtxt('/home/aki/catkin_ws/src/myo2dynamixel/scripts/data/train.txt', delimiter=',')
+          data_training_tmp = np.loadtxt('/home/roboworks/catkin_ws/src/myo2dynamixel/scripts/data/train.txt', delimiter=',')
           data_training = [[x[1], x[2],x[3], x[4],x[5], x[6],x[7], x[8]] for x in data_training_tmp]
           label_training = [int(x[0]) for x in data_training_tmp]
+          # 学習
+          self.estimator = LinearSVC(C=1)#誤差項のペナルティパラメータC よくわからん。
+          self.estimator.fit(data_training, label_training)
+          self.pub = rospy.Publisher("/tilt_controller/command", Float64, queue_size=1)
           rospy.Subscriber("/myo_emg", EmgArray, self.call, queue_size=1)
+          rospy.spin()
+
       def call(self,data):
           # 試験データ
-          #data_test = np.loadtxt('/home/aki/catkin_ws/src/myo2dynamixel/scripts/data/Q.txt', delimiter=',')
-          data_test = data.data()
-          # 学習
-          estimator = LinearSVC(C=0.88)#誤差項のペナルティパラメータC よくわからん。
-          estimator.fit(data_training, label_training)
-
+          data_test = [[0,0,0,0,0,0,0,0]]
+          for i in range(8):
+              data_test[0][i] = data.data[i]
+          
           # 予測するよー
-          label_prediction = estimator.predict(data_test)
-          if label_prediction == 1:
-             print "開いてる"
+          label_prediction = self.estimator.predict(data_test)
+          if label_prediction == 0:
+#             print "開いてる"
+             self.pub.publish(1)
           else:
-             print "閉じてる"
-          print(label_prediction)
+#             print "閉じてる"
+             self.pub.publish(0)
+#          print(label_prediction)
 
 if __name__ == "__main__":
 #   try:
