@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
 from __future__ import print_function
 import socket
 import time
@@ -11,13 +14,13 @@ angle_data = ""
 def callback(data):
     global angle_data
     angle_data = data.data
-
+#    print (angle_data)
 def main(host,port):
   hosts = host
   ports = port
   count = 0
   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  rospy.Subscriber("/tilt_controller/commands",Float64,callback,queue_size=1)
+  rospy.Subscriber("/tilt_controller/command",Float64,callback,queue_size=1)
   with closing(sock):
     while not rospy.is_shutdown():
       global angle_data
@@ -28,6 +31,6 @@ def main(host,port):
 
 if __name__ == '__main__':
   rospy.init_node("hand_udp_send")
-  host =  '127.0.0.1'
+  host =  '10.254.21.23'
   port = 4001
   main(host,port)

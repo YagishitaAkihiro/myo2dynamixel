@@ -32,11 +32,12 @@ class SVM_HC():
           label_prediction = self.estimator.predict(data_test)
           if label_prediction == 1:
              print "開いてる"
-             self.pub.publish(0)
+             self.pub.publish(1)
           else:
              print "閉じてる"
-             self.pub.publish(1)
+             self.pub.publish(0.3)
 #          print(label_prediction)
+          rospy.sleep(0.2)
 
 if __name__ == "__main__":
 #   try:
